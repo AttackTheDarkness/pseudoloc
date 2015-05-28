@@ -71,7 +71,7 @@ pseudoloc = function() {
     return pStr;
   };
   pseudoloc.str = function(str) {
-    var opts = pseudoloc.option, startdelim = opts.startDelimiter || opts.delimiter, enddelim = opts.endDelimiter || opts.delimiter, re = new RegExp(startdelim + "\\s*[\\w\\.\\s*]+\\s*" + enddelim, "g"), m, tokens = [], i = 0, tokenIdx = 0, result = "", c, pc;
+    var opts = pseudoloc.option, startdelim = opts.startDelimiter || opts.delimiter, enddelim = opts.endDelimiter || opts.delimiter, re = new RegExp(startdelim + "\\s*[\\w\\.\\s*]+\\s*" + enddelim, "g"), m, tokens = [], i = 0, tokenIdx = 0, result = "", c, pc, j;
     while (m = re.exec(str)) {
       tokens.push(m);
     }
@@ -89,7 +89,11 @@ pseudoloc = function() {
       }
       c = opts.override !== undefined ? opts.override : str[i];
       pc = pseudoloc.table[c];
-      result += pc ? pc[Math.random() * pc.length | 0] : c;
+      if (pc) {
+        pseudoloc.table[c] = pc.substr(1, pc.length - 1) + pc.substr(0, 1);
+        c = pc[0];
+      }
+      result += c;
       i++;
     }
     return opts.prepend + pseudoloc.pad(result, opts.extend) + opts.append;

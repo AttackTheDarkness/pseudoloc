@@ -19,11 +19,11 @@ describe('pseudoloc.str', function() {
     pseudoloc.str('test string').length.should.be.above(11);
   });
 
-  it('should produce unique versions of the string each time', function() {
-    var s1 = pseudoloc.str('test string'),
-        s2 = pseudoloc.str('test string');
-
-    s1.should.not.eql(s2);
+  it('should rotate through character variants', function() {
+    pseudoloc.option.prepend = '';
+    pseudoloc.option.append = '';
+    var s1 = pseudoloc.str('BBBBB');
+    s1.should.eql(String.fromCharCode(223,385,579,665,223));
   });
 
   it('should not pseudolocalize escaped strings', function() {
